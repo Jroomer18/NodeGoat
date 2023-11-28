@@ -69,9 +69,25 @@ const index = (app, db) => {
     // Handle redirect for learning resources link
     app.get("/learn", isLoggedIn, (req, res) => {
         // Insecure way to handle redirects by taking redirect url from query string
-        return res.redirect(req.query.url);
-    });
+       // Define a whitelist of allowed URLs
+    const urlWhitelist = [
+        'https://example1.com', // Replace with actual allowed URL
+        'https://example2.com'  // Replace with another allowed URL
+        // Add more trusted URLs as needed
+    ];
 
+    app.get("/learn", isLoggedIn, (req, res) => {
+        const redirectUrl = req.query.url;
+
+        // Check if the URL is in the whitelist
+        if (urlWhitelist.includes(redirectUrl)) {
+            return res.redirect(redirectUrl);
+        } else {
+            // If the URL is not in the whitelist, redirect to a default page or show an error
+            // Replace '/safe-default-page' with the path to your default safe page
+            return res.redirect('/safe-default-page');
+        }
+    });
     // Research Page
     app.get("/research", isLoggedIn, researchHandler.displayResearch);
 
