@@ -70,24 +70,28 @@ const index = (app, db) => {
     app.get("/learn", isLoggedIn, (req, res) => {
         // Insecure way to handle redirects by taking redirect url from query string
        // Define a whitelist of allowed URLs
-    const urlWhitelist = [
-        'https://example1.com', // Replace with actual allowed URL
-        'https://example2.com'  // Replace with another allowed URL
-        // Add more trusted URLs as needed
+     // Define a whitelist of allowed hostnames
+    const hostnameWhitelist = [
+        'example1.com', // Replace with actual allowed hostname
+        'example2.com'  // Replace with another allowed hostname
+        // Add more trusted hostnames as needed
     ];
 
     app.get("/learn", isLoggedIn, (req, res) => {
         const redirectUrl = req.query.url;
+        const parsedUrl = url.parse(redirectUrl);
 
-        // Check if the URL is in the whitelist
-        if (urlWhitelist.includes(redirectUrl)) {
+        // Validate hostname and protocol
+        if (hostnameWhitelist.includes(parsedUrl.hostname) && parsedUrl.protocol === 'https:') {
             return res.redirect(redirectUrl);
         } else {
-            // If the URL is not in the whitelist, redirect to a default page or show an error
+            // If the URL is not valid, redirect to a default page or show an error
             // Replace '/safe-default-page' with the path to your default safe page
             return res.redirect('/safe-default-page');
         }
     });
+
+    // ... [other code remains unchanged]
     // Research Page
     app.get("/research", isLoggedIn, researchHandler.displayResearch);
 
