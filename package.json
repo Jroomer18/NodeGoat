@@ -63,6 +63,7 @@
   "repository": "https://github.com/OWASP/NodejsGoat",
   "license": "Apache 2.0",
   "overrides": {
-    "fsevents@<=1.2.11": "1.2.11"
+    "fsevents@<=1.2.11": "1.2.11",
+    "bson@<=1.1.4": "1.1.4"
   }
 }
